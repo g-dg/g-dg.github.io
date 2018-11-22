@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Mathdrill</title>
+		<script src="jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="intro">
+			<label for="timelimit">Time limit (seconds): </label>
+			<input type="text" id="timelimit" value="60" min="1" />
+			<br />
+			<input type="submit" id="start" value="Start" />
+		</div>
+		<div id="game" style="display: none;">
+			<div id="time_remaining"></div>
+			<div id="question"></div>
+			<input type="text" id="answer" />
+			<input type="submit" id="submit" value="Answer" />
+			<div id="answered"></div>
+		</div>
+		<script>"use strict"
+var number1 = 0;
+var number2 = 0;
+var answer = 0;
+var question_string = "";
+var total_answers = 0;
+var correct_answers = 0;
+var total_time = 60;
+var time_remaining = total_time;
+
+
+function newQuestion() {
+	switch (Math.floor(Math.random() * 2)) {
+		case 0:
+			number1 = Math.floor(Math.random() * 9 + 1);
+			number2 = Math.floor(Math.random() * 9 + 1);
+			answer = number1 + number2;
+			question_string = number1 + " + " + number2;
+			break;
+		case 1:
+ 			number1 = Math.floor(Math.random() * 9 + 1) + 5;
+			number2 = Math.floor(Math.random() * 4 + 1);
+			answer = number1 - number2;
+			question_string = number1 + " - " + number2;
+			break;
+	}
+	$("#question").text(question_string);
+	$("#answer").val("").focus();
+}
+
+$("#submit").click(function(){
+	total_answers++;
+	if (answer == parseInt($("#answer").val())) {
+		correct_answers++;
+		$("#answered").prepend($("<div>").text(question_string + " = " + $("#answer").val()).css("color", "green"));
+	} else {
+		$("#answered").prepend($("<div>").text(question_string + " = " + $("#answer").val()).css("color", "red"));
+	}
+	newQuestion();
+});
+
+$("#answer").keyup(function(evt){
+	if (evt.keyCode == 13) {
+		$("#submit").click();
+	}
+});
+
+function timerFunction() {
+	if (--time_remaining <= 0) {
+		alert("Time's up!\n\nCorrect: " + correct_answers + "/" + total_answers + " (" + (total_answers > 0 ? Math.round(correct_answers / total_answers * 100) : 0) + "%)\nCorrect answers per minute: " + Math.round(correct_answers / total_time * 60));
+		end();
+	} else {
+		$("#time_remaining").text(time_remaining + " seconds remaining");
+		setTimeout(timerFunction, 1000)
+	}
+}
+
+function start() {
+	$("#answered").html("");
+
+	newQuestion();
+
+	time_remaining = total_time = parseInt($("#timelimit").val());
+	if (time_remaining == null || time_remaining == NaN) {
+		time_remaining = 60;
+	}
+
+	$("#time_remaining").text(time_remaining + " seconds remaining");
+	setTimeout(timerFunction, 1000);
+
+	$("#intro").hide();
+	$("#game").show();
+
+	$("#answer").focus();
+}
+
+function end() {
+	$("#game").hide();
+	$("#intro").show();
+	total_answers = 0;
+	correct_answers = 0;
+}
+
+$("#start").click(function(){
+	start();
+})
+
+		</script>
+	</body>
+</html>

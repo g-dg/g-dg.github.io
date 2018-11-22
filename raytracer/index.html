@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Garnet DeGelder's Raytracer</title>
+	</head>
+	<body>
+		<canvas id="canvas" width="800" height="600"></canvas>
+		<script type="text/javascript">"use strict"
+
+			var canvas = document.getElementById('canvas');
+			var ctx = canvas.getContext('2d');
+
+			function vec3(x, y, z)
+			{
+				return {x,y,z};
+			}
+			function rgb(r, g, b)
+			{
+				r = constrain(Math.round(r), 0, 255);
+				g = constrain(Math.round(g), 0, 255);
+				b = constrain(Math.round(b), 0, 255);
+				return {r,g,b};
+			}
+			function line(a, b)
+			{
+				return {a,b};
+			}
+			function sphere(location, radius, color)
+			{
+				return {location, radius, color, "type": "sphere"};
+			}
+
+			function drawPixel(x, y, color)
+			{
+				ctx.fillStyle = "rgb("+color.r+","+color.g+","+color.b+")";
+				// draw a 1-pixel rectangle at the coordinates
+				ctx.fillRect( x, y, 1, 1 );
+			}
+
+			function constrain(x, min, max) { // makes "x" be between min and max
+				return (Math.min(Math.max(x, min), max));
+			}
+			function map(value, in_min, in_max, out_min, out_max) {
+				// transposes the value's position from between one number range to another number range
+				return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+			}
+			function add(first, second) {
+				return vec3(first.x + second.x, first.y + second.y, first.z + second.z);
+			}
+			function subtract(first, second) {
+				return vec3(first.x - second.x, first.y - second.y, first.z - second.z);
+			}
+			function scale(vector, factor) {
+				return vec3(vector.x * factor, vector.y * factor, vector.z * factor);
+			}
+			function length(line) {
+				// Pythagorean theorem
+				return Math.sqrt(Math.pow((line.a.x + line.b.x),2) + Math.pow((line.a.y + line.b.y),) + Math.pow((line.a.z + line.b.z),2));
+			}
+			function positionInRange(min, max, position) {
+				// this used to add min and max and divide by position^-1, making sure not to take the inverse of 0.
+				// this way is more precise because of how computers store floating point values
+				return (max - min) * position + min;
+			}
+			function positionOnLine(line, position) { // gets the coordinates of a position on a line
+				return vec3(positionInRange(line.a.x, line.b.x, position), positionInRange(line.a.y, line.b.y, position), positionInRange(line.a.z, line.b.z, position));
+			}
+			function scaleLine(fixed_point, point_to_scale, factor) { // extends/intends a line
+				return line(fixed_point, add(scale(subtract(point_to_scale, fixed_point), factor), fixed_point));
+			}
+
+			// returns the fraction of the line the intersection is at
+			function raySphereIntersect(sphere, ray)
+			{
+				// The complex math for this is from https://stackoverflow.com/a/31348941
+
+				// set up nice short variable names
+				var cx = sphere.location.x;
+				var cy = sphere.location.y;
+				var cz = sphere.location.z;
+
+				var px = ray.a.x;
+				var py = ray.a.y;
+				var pz = ray.a.z;
+
+				var vx = ray.b.x - px;
+				var vy = ray.b.y - py;
+				var vz = ray.b.z - pz;
+
+				// calculate A, B, C for the quadratic formula
+				// typing "x * x" is way easier than typing "Math.pow(x, 2)".
+				var a = vx * vx + vy * vy + vz * vz;
+				var b = 2.0 * (px * vx + py * vy + pz * vz - vx * cx - vy * cy - vz * cz);
+				var c = px * px - 2 * px * cx + cx * cx + py * py - 2 * py * cy + cy * cy + pz * pz - 2 * pz * cz + cz * cz - sphere.radius * sphere.radius;
+
+				var discriminant = b * b - 4 * a * c;
+
+				if (discriminant >= 0) {
+					// We only need the root that you get when doing the subtraction part of the quadratic formula, not the addition.
+					// The addition returns the backside of the sphere.
+					var solution = (-b - Math.sqrt(discriminant)) / (2 * a);
+
+					// the solution must be valid (ie. between 0 and 1)
+					if (solution >= 0 && solution <= 1) {
+						return solution;
+					}
+				}
+				return false;
+			}
+
+			function getColor(x, y)
+			{
+				// get the fractions of the screen/image
+				var screen_x_fraction = (x - screen_min_x) / (screen_max_x - screen_min_x);
+				var screen_y_fraction = (y - screen_min_y) / (screen_max_y - screen_min_y);
+
+				// get the 3D coordinates of the pixel on the screen
+				var screen_top_x_3d_coords = positionOnLine(line(image_top_left, image_top_right), screen_x_fraction);
+				var screen_bottom_x_3d_coords = positionOnLine(line(image_bottom_left, image_bottom_right), screen_x_fraction);
+				var pixel_coords = positionOnLine(line(screen_top_x_3d_coords, screen_bottom_x_3d_coords), screen_y_fraction);
+
+				var ray = scaleLine(camera, pixel_coords, max_ray_scale_length);
+
+				var intersections = [];
+
+				// calculate intersections
+				for (var i = 0; i < objects.length; i++) {
+					if (objects[i].type == "sphere") {
+						var intersection_point = raySphereIntersect(objects[i], ray);
+						if (intersection_point !== false) {
+							intersections.push({"object": objects[i], "distance": intersection_point});
+						}
+					}
+				}
+
+				// find the closest intersection to the camera
+				var closest_intersection = {"object": {"color": background_color}, "distance": max_ray_scale_length};
+				for (var i = 0; i < intersections.length; i++) {
+					if (intersections[i].distance <= closest_intersection.distance) {
+						closest_intersection = intersections[i];
+					}
+				}
+				
+				return closest_intersection.object.color;
+			}
+
+			// right-handed coordinate system
+
+			//    Y
+			//    |__ X
+			//   /
+			//  Z
+
+			// camera facing +Z
+			// because we define all 4 points of the screen, it can tilt, rotate, and be twisted.
+			var image_top_left = vec3(-0.8, 0.6, 1.5);
+			var image_top_right = vec3(0.8, 0.6, 1.5);
+			var image_bottom_left = vec3(-0.8, -0.6, 1.5);
+			var image_bottom_right = vec3(0.8, -0.6, 1.5);
+			var camera = vec3(0.0, 0.0, 0.0);
+
+			var background_color = rgb(128, 128, 128);
+
+			// generate the objects
+			var objects = [];
+			var number_of_spheres = Math.random()*100+100;
+			for (var i = 0; i < number_of_spheres; i++) {
+				objects.push(sphere(vec3(Math.random()*100-50, Math.random()*100-50, Math.random()*100+50), 5, rgb(Math.random()*255, Math.random()*255, Math.random()*255)));
+			}
+			
+			// this number is fairly arbitrary, we only need a big enough number to get all the spheres.
+			// if some are missing, or incomplete, increase this
+			var max_ray_scale_length = 1000000;
+
+			// get the canvas dimensions
+			var screen_min_x = 0;
+			var screen_min_y = 0;
+			var screen_max_x = parseInt(canvas.getAttribute('width'));
+			var screen_max_y = parseInt(canvas.getAttribute('height'));
+
+			// the main part of this program (actually delagates all the work)
+			for (var y = screen_min_y; y < screen_max_y; y++) { // for each row
+				for (var x = screen_min_x; x < screen_max_x; x++) { // for each column
+					drawPixel(x, y, getColor(x, y));
+				}
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+body {
+	padding: 10px;
+}
+
+table.sudoku {
+	border-top: 2px black solid;
+	border-left: 2px black solid;
+	border-collapse: collapse;
+	font-size: 200%;
+	margin-bottom: 10px;
+}
+
+table.sudoku>tbody>tr>td {
+	padding: 1em;
+	border: 1px black solid;
+	font-family: monospace;
+	font-weight: bold;
+}
+
+table.sudoku>tbody>tr:nth-child(3n)>td {
+	border-bottom: 2px black solid;
+}
+table.sudoku>tbody>tr>td:nth-child(3n) {
+	border-right: 2px black solid;
+}
+
+table.sudoku>tbody>tr>td.error {
+	color: red;
+}
+table.sudoku>tbody>tr>td.selected {
+	background-color: #ccc;
+}
+table.sudoku>tbody>tr>td.error.selected {
+	background-color: red;
+	color: black;
+}
+
+table.sudoku>tbody>tr>td.calculated {
+	color: #666;
+	font-weight: normal;
+}
+
+
+button, input, select, textarea, label {
+	margin: 10px;
+}
+
+input[type="checkbox"], input[type="radiobutton"] {
+	margin-right: 5px;
+	vertical-align: middle;
+}
+label {
+	margin-left: 0px;
+	vertical-align: middle;
+}

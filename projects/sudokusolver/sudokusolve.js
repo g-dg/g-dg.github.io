@@ -2,10 +2,13 @@
 
 var inputSudoku = [];
 var calculatedSudoku = [];
-var selectedCell = {row: 0, col: 0};
+var selectedCell = {
+	row: 0,
+	col: 0
+};
 
 // setup function
-$(function() {
+$(function () {
 	// draw initial page
 	var body = $("body");
 	body.append($("<table id=\"sudoku\">"));
@@ -21,10 +24,10 @@ $(function() {
 	body.append($("<button>Export Solved</button>").click(exportSolvedSudoku));
 	body.append("<br>");
 	body.append($("<input id=\"number_input\" type=\"number\" min=\"1\" max=\"9\" step=\"1\" placeholder=\"\">").keypress(keypressHandler));
-	
+
 	// set current value on type
 	$(document.body).bind("keypress", keypressHandler);
-	
+
 	// allocate sudoku and draw
 	clear();
 });
@@ -36,7 +39,10 @@ function redraw() {
 	for (var i = 0; i < 9; i++) {
 		var tr = $("<tr>");
 		for (var j = 0; j < 9; j++) {
-			var cellLocation = { col: j, row: i };
+			var cellLocation = {
+				col: j,
+				row: i
+			};
 			var value = calculatedSudoku[cellLocation.row][cellLocation.col];
 			var td = $("<td>");
 			td.data("location", cellLocation);
@@ -57,6 +63,7 @@ function redraw() {
 function getRowValues(row) {
 	return calculatedSudoku[row];
 }
+
 function getColumnValues(col) {
 	var resultArray = [];
 	for (var i = 0; i < 9; i++) {
@@ -64,6 +71,7 @@ function getColumnValues(col) {
 	}
 	return resultArray;
 }
+
 function getBlockValues(row, col) {
 	var resultArray = [];
 	for (var i = row * 3; i < (row * 3 + 3); i++) {
@@ -78,9 +86,11 @@ function getBlockValues(row, col) {
 function inRow(row, value) {
 	return (getRowValues(row).indexOf(value) != -1);
 }
+
 function inCol(col, value) {
 	return (getColumnValues(col).indexOf(value) != -1);
 }
+
 function inBlock(row, col, value) {
 	return (getBlockValues(row, col).indexOf(value) != -1);
 }
@@ -96,6 +106,17 @@ function cellsRemaining() {
 		}
 	}
 	return count;
+}
+
+// get an array of possibilities for the specified cell
+function getPossibilities(cell) {
+	var results = [];
+	for (var val = 1; val <= 1; val++) {
+		if (!inRow(cell.row, val) && !inCol(cell.col, val) && !inBlock(Math.floor(cell.row / 3), Math.floor(cell.col / 3))) {
+			results.push(val);
+		}
+	}
+	return results;
 }
 
 // clear button handler
@@ -137,7 +158,10 @@ function errors() {
 	var errors = 0;
 	for (var i = 0; i < 9; i++) {
 		for (var j = 0; j < 9; j++) {
-			if (!checkCell({ col: j, row: i })) {
+			if (!checkCell({
+					col: j,
+					row: i
+				})) {
 				errors++;
 			}
 		}
@@ -149,12 +173,13 @@ function errors() {
 function checkCell(cellLocation) {
 	return calculatedSudoku[cellLocation.row][cellLocation.col] == 0 ||
 		!(isDuplicateValue(getRowValues(cellLocation.row), calculatedSudoku[cellLocation.row][cellLocation.col]) ||
-		isDuplicateValue(getColumnValues(cellLocation.col), calculatedSudoku[cellLocation.row][cellLocation.col]) ||
-		isDuplicateValue(getBlockValues(Math.floor(cellLocation.row / 3), Math.floor(cellLocation.col / 3)), calculatedSudoku[cellLocation.row][cellLocation.col]));
+			isDuplicateValue(getColumnValues(cellLocation.col), calculatedSudoku[cellLocation.row][cellLocation.col]) ||
+			isDuplicateValue(getBlockValues(Math.floor(cellLocation.row / 3), Math.floor(cellLocation.col / 3)), calculatedSudoku[cellLocation.row][cellLocation.col]));
 }
 
 // solve button handler / autosolve function
-function solve() {
+function solve(sudoku) {
+	sudoku = JSON.parse(JSON.stringify(sudoku));
 	if (errors() == 0) {
 		var solved = 0;
 		do {
@@ -165,12 +190,16 @@ function solve() {
 				for (var col = 0; col < 9; col++) {
 					var possibilities = [];
 					for (var val = 1; val <= 9; val++) {
-						if (calculatedSudoku[row][col] == 0 && !inRow(row, val) && !inCol(col, val) && !inBlock(Math.floor(row / 3), Math.floor(col / 3), val)) {
-							possibilities.push({ row, col, val });
+						if (sudoku[row][col] == 0 && !inRow(row, val) && !inCol(col, val) && !inBlock(Math.floor(row / 3), Math.floor(col / 3), val)) {
+							possibilities.push({
+								row,
+								col,
+								val
+							});
 						}
 					}
 					if (possibilities.length == 1) {
-						calculatedSudoku[possibilities[0].row][possibilities[0].col] = possibilities[0].val;
+						sudoku[possibilities[0].row][possibilities[0].col] = possibilities[0].val;
 						solved++;
 					}
 				}
@@ -184,18 +213,21 @@ function solve() {
 							var possibilities = [];
 							for (var row = (blockRow * 3); row < (blockRow * 3 + 3); row++) {
 								for (var col = (blockCol * 3); col < (blockCol * 3 + 3); col++) {
-									if (calculatedSudoku[row][col] == 0 && !inRow(row, val) && !inCol(col, val)) {
-										possibilities.push({ row, col });
+									if (sudoku[row][col] == 0 && !inRow(row, val) && !inCol(col, val)) {
+										possibilities.push({
+											row,
+											col
+										});
 									}
 								}
 							}
 							if (possibilities.length == 1) {
-								calculatedSudoku[possibilities[0].row][possibilities[0].col] = val;
+								sudoku[possibilities[0].row][possibilities[0].col] = val;
 								solved++;
 							}
 						}
 					}
-					
+
 				}
 			}
 
@@ -205,12 +237,12 @@ function solve() {
 					if (!inRow(row, val)) {
 						var possibilities = [];
 						for (var col = 0; col < 9; col++) {
-							if (calculatedSudoku[row][col] == 0 && !inBlock(Math.floor(row / 3), Math.floor(col / 3), val) && !inCol(col, val)) {
+							if (sudoku[row][col] == 0 && !inBlock(Math.floor(row / 3), Math.floor(col / 3), val) && !inCol(col, val)) {
 								possibilities.push(col);
 							}
 						}
 						if (possibilities.length == 1) {
-							calculatedSudoku[row][possibilities[0]] = val;
+							sudoku[row][possibilities[0]] = val;
 							solved++;
 						}
 					}
@@ -223,12 +255,12 @@ function solve() {
 					if (!inCol(col, val)) {
 						var possibilities = [];
 						for (var row = 0; row < 9; row++) {
-							if (calculatedSudoku[row][col] == 0 && !inBlock(Math.floor(row / 3), Math.floor(col / 3), val) && !inRow(row, val)) {
+							if (sudoku[row][col] == 0 && !inBlock(Math.floor(row / 3), Math.floor(col / 3), val) && !inRow(row, val)) {
 								possibilities.push(row);
 							}
 						}
 						if (possibilities.length == 1) {
-							calculatedSudoku[possibilities[0]][col] = val;
+							sudoku[possibilities[0]][col] = val;
 							solved++;
 						}
 					}
@@ -238,7 +270,7 @@ function solve() {
 		} while (solved > 0);
 	}
 
-	redraw();
+	return sudoku;
 }
 
 // checks if value is a duplicate in the input array
@@ -261,13 +293,13 @@ function keypressHandler(e) {
 		e.stopPropagation();
 		inputSudoku[selectedCell.row][selectedCell.col] = keyIndex + 1;
 		calculatedSudoku = JSON.parse(JSON.stringify(inputSudoku));
-		if ($("#autosolve").is(':checked')) solve();
+		if ($("#autosolve").is(':checked')) calculatedSudoku = solve(inputSudoku);
 	} else if (["0", "Backspace", "Clear", "Delete"].indexOf(e.key) != -1) {
 		e.stopPropagation();
 		e.preventDefault();
 		inputSudoku[selectedCell.row][selectedCell.col] = 0;
 		calculatedSudoku = JSON.parse(JSON.stringify(inputSudoku));
-		if ($("#autosolve").is(':checked')) solve();
+		if ($("#autosolve").is(':checked')) calculatedSudoku = solve(inputSudoku);
 	} else if (e.key == "ArrowUp" || e.key == "Up") {
 		e.preventDefault();
 		e.stopPropagation();
@@ -288,22 +320,23 @@ function keypressHandler(e) {
 		e.stopPropagation();
 		selectedCell.row++;
 		if (selectedCell.row > 8) selectedCell.row = 0;
-	}/* else if (e.key == "Tab") {
-		selectedCell.col++
-		if (selectedCell.col >= 9) {
-			selectedCell.col = 0;
-			selectedCell.row++;
-			if (selectedCell.row >= 9) {
-				selectedCell = {row: 8, col: 8};
+	}
+	/* else if (e.key == "Tab") {
+			selectedCell.col++
+			if (selectedCell.col >= 9) {
+				selectedCell.col = 0;
+				selectedCell.row++;
+				if (selectedCell.row >= 9) {
+					selectedCell = {row: 8, col: 8};
+				} else {
+					e.stopPropagation();
+					e.preventDefault();
+				}
 			} else {
 				e.stopPropagation();
 				e.preventDefault();
 			}
-		} else {
-			e.stopPropagation();
-			e.preventDefault();
-		}
-	}*/
+		}*/
 	$("#number_input").val("");
 	redraw();
 }
@@ -340,9 +373,10 @@ function importSudoku() {
 		} while (ptr < input.length && row < 9 && col < 9);
 	}
 	calculatedSudoku = JSON.parse(JSON.stringify(inputSudoku));
-	if ($("#autosolve").is(':checked')) solve();
+	if ($("#autosolve").is(':checked')) calculatedSudoku = solve(inputSudoku);
 	redraw();
 }
+
 function exportInputSudoku() {
 	var result = "";
 	for (var row = 0; row < 9; row++) {
@@ -352,8 +386,9 @@ function exportInputSudoku() {
 	}
 	alert(result);
 }
+
 function exportSolvedSudoku() {
-	solve();
+	calculatedSudoku = solve(inputSudoku);
 	var result = "";
 	for (var row = 0; row < 9; row++) {
 		for (var col = 0; col < 9; col++) {

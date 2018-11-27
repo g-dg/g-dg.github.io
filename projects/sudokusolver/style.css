@@ -31,8 +31,9 @@ table.sudoku>tbody>tr>td.selected {
 	background-color: #ccc;
 }
 table.sudoku>tbody>tr>td.error.selected {
-	background-color: red;
+	background-color: #f99;
 	color: black;
+	font-weight: normal;
 }
 
 table.sudoku>tbody>tr>td.calculated {

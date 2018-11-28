@@ -51,7 +51,7 @@ function redraw() {
 			if (!checkCell(cellLocation)) td.addClass("error");
 			td.click(cellClickHandler);
 			if (cellLocation.col == selectedCell.col && cellLocation.row == selectedCell.row) {
-				td.addClass("selected")
+				td.addClass("selected");
 			}
 			tr.append(td);
 		}

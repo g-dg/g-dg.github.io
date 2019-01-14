@@ -21,6 +21,7 @@ nav {
 	z-index: 1;
 	background-color: black;
 	color: white;
+	cursor: default;
 }
 nav a {
 	color: white;
@@ -44,7 +45,7 @@ nav > * {
 	height: 48px;
 	line-height: 32px;
 }
-nav a,
+nav > a,
 nav .dropdown > .button {
 	padding: 8px 16px;
 	margin: 0px;
@@ -58,8 +59,8 @@ nav .dropdown {
 	padding: 0px;
 }
 
-nav a:active,
-nav a:hover,
+nav > a:active,
+nav > a:hover,
 nav .dropdown:active > .button,
 nav .dropdown:hover > .button {
 	background-color: #333;

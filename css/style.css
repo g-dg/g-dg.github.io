@@ -1,1 +1,138 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: sans-serif;
+}
+
+nav {
+	position: fixed;
+	margin: 0px;
+	padding: 0px;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	height: 48px;
+	z-index: 1;
+	background-color: black;
+	color: white;
+}
+nav a {
+	color: white;
+	text-decoration: none;
+}
+
+nav .dropdown > .button {
+	cursor: default;
+	padding: 0px 16px;
+}
+nav .dropdown > .content {
+	background-color: grey;
+}
+
+nav > a,
+nav > * {
+	display: block;
+	float: left;
+	margin: 0px;
+	padding: 8px 0px;
+	height: 48px;
+	line-height: 32px;
+}
+nav a,
+nav .dropdown > .button {
+	padding: 8px 16px;
+	margin: 0px;
+}
+nav .dropdown > .button > a {
+	padding: 0px;
+}
+
+nav .dropdown {
+	margin: 0px;
+	padding: 0px;
+}
+
+nav a:active,
+nav a:hover,
+nav .dropdown:active > .button,
+nav .dropdown:hover > .button {
+	background-color: #333;
+}
+
+nav > .dropdown > .content {
+	display: none;
+	position: absolute;
+	margin: 0px;
+	padding: 0px;
+	width: 256px;
+	background-color: black;
+	z-index: 1;
+}
+nav > .dropdown:active > .content,
+nav > .dropdown:hover > .content {
+	display: block;
+}
+
+nav .dropdown > .content > a {
+	display: block;
+	float: none;
+}
+
+nav > .dropdown > .content .dropdown {
+	position: relative;
+}
+
+nav .dropdown > .content > a,
+nav .dropdown > .content > p,
+nav .dropdown > .content > .dropdown > .button {
+	margin: 0px;
+	padding: 8px 16px;
+}
+
+nav p,
+nav .dropdown > .content > p {
+	line-height: 32px;
+	padding: 8px 16px;
+	min-height: 48px;
+}
+
+nav > .dropdown > .content .dropdown > .content {
+	display: none;
+	position: absolute;
+	left: 256px;
+	top: 0px;
+	width: 256px;
+	margin: 0px;
+	padding: 0px;
+	background-color: black;
+	z-index: 1;
+	float: right;
+}
+nav > .dropdown > .content .dropdown:active > .content,
+nav > .dropdown > .content .dropdown:hover > .content {
+	display: block;
+}
+
+
+main {
+	margin-top: 48px;
+	z-index: 0;
+	/* padding: 16px 20%; */
+	margin: 64px auto 16px;
+	width: 768px;
+	min-width: 50%;
+}
+
+main > h1 {
+	text-align: center;
+	font-size: 300%;
+}
+main > section {
+	margin: 64px 0px;
+}

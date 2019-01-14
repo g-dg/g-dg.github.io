@@ -1,59 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<title>Garnet DeGelder</title>
-	<link href="css/normalize.css" rel="stylesheet" />
-	<link href="css/style.css" rel="stylesheet" />
-</head>
-<body>
-	<h1>Welcome to Garnet DeGelder's Website!</h1>
-	<h2>Some projects I'm working on:</h2>
-	<ul>
-		<li>
-			<a href="//github.com/g-dg/filemanager/">Web-based file manager version 3</a>
-			<p>
-				Next version of <a href="//github.com/g-dg/filemanager2">my file browser</a> (with write support)
-			</p>
-		</li>
-		<li>
-			<a href="//github.com/g-dg/filemanager2/">Web-based file browser version 2</a>
-			<p>
-				Vastly improved version of <a href="//github.com/g-dg/filemanager1">my file browser</a>
-			</p>
-		</li>
-		<li>
-			<a href="//github.com/g-dg/filemanager1/">Web-based file browser version 1</a>
-			<p>
-				Quick replacement for http directory listings (old, no longer supported)
-				Created because I wanted a more customizable directory listing and didn't feel like learning how to configure my web server
-			</p>
-		</li>
-		<li>
-			<a href="projects/sudokusolver/">Sudoku solver</a>
-			<p>
-				HTML and Javascript port of sudoku solver.
-				Created to see if my method of solving sudokus works in every case (it doesn't)
-			</p>
-		</li>
-		<li>
-			<a href="projects/mathdrill/">Math drill</a>
-			<p>
-				Simple math drill program I wrote for my siblings
-			</p>
-		</li>
-		<li>
-			<a href="projects/raytracer/">Raytracer</a>
-			<p>
-				Simple non-recursive raytracer experiment that doesn't use trigonometric functions
-			</p>
-		</li>
-		<li>
-			<a href="projects/mandelbrot/">Mandelbrot viewer</a>
-			<p>
-				Playing around with fractals
-			</p>
-		</li>
-	</ul>
-</body>
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Garnet DeGelder</title>
+		<link href="css/normalize.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<nav>
+			<a href="#">Garnet DeGelder</a>
+			<div class="dropdown">
+				<div class="button">Projects</div>
+				<div class="content">
+					<div class="dropdown">
+						<div class="button">File Manager</div>
+						<div class="content">
+							<div class="dropdown">
+								<div class="button"><a href="//github.com/g-dg/filemanager/">Version 3 (In Development)</a></div>
+								<div class="content">
+									<p>The next version of <a href="//github.com/g-dg/filemanager2/">my File Manager version 2</a></p>
+								</div>
+							</div>
+							<div class="dropdown">
+								<div class="button"><a href="//github.com/g-dg/filemanager2/">Version 2 (Latest Version)</a></div>
+								<div class="content">
+									<p>Improved version of <a href="//github.com/g-dg/filemanager1/">my File Manager version 1</a></p>
+								</div>
+							</div>
+							<div class="dropdown">
+								<div class="button"><a href="//github.com/g-dg/filemanager1/">Version 1 (Legacy Version)</a></div>
+								<div class="content">
+									<p>Quick replacement for HTTP directory listings</p>
+								</div>
+							</div>
+						</div>
+					</div><!-- File Manager -->
+					<div class="dropdown">
+						<div class="button"><a href="projects/sudokusolver/">Sudoku solver</a></div>
+						<div class="content">
+							<p>HTML and Javascript port of my sudoku solver, created to test whether my method of solving sudokus works in all cases</p>
+						</div>
+					</div><!-- Sudoku Solver -->
+					<div class="dropdown">
+						<div class="button">Smaller Projects and Experiments</div>
+						<div class="content">
+							<div class="dropdown">
+								<div class="button"><a href="projects/mathdrill/">Math drill game</a></div>
+								<div class="content">
+									<p>Simple math drill program</p>
+								</div>
+							</div>
+							<div class="dropdown">
+								<div class="button"><a href="projects/raytracer/">Raytracer</a></div>
+								<div class="content">
+									<p>Non-recursive raytracer that doesn't use any trigonometric functions or pi for calculations</p>
+								</div>
+							</div>
+							<div class="dropdown">
+								<div class="button"><a href="projects/mandelbrot/">Mandelbrot viewer</a></div>
+								<div class="content">
+									<p>Simple mandelbrot fractal viewer</p>
+								</div>
+							</div>
+							<div class="dropdown">
+								<div class="button"><a href="http://garnet.pfsoftware.ca/react!/">Audio/visual reaction time tester</a></div>
+								<div class="content">
+									<p>Reaction time tester created for a high school biology project</p>
+								</div>
+							</div>
+							<div class="dropdown">
+								<div class="button"><a href="//garnetdg.ca/">This website</a></div>
+								<div class="content">
+									<p>The website for <a href="https://garnetdg.ca/">https://garnetdg.ca/</a></p>
+								</div>
+							</div>
+						</div>
+					</div><!-- Misc Projects -->
+				</div>
+			</div><!-- Projects -->
+			<div class="dropdown">
+				<div class="button">Follow</div>
+				<div class="content">
+					<a href="https://github.com/g-dg/">GitHub</a>
+					<a href="https://gitlab.com/g-dg/">GitLab</a>
+				</div>
+			</div>
+			<a href="mailto:garnet.h.degelder17@gmail.com">Contact</a>
+		</nav>
+		<main>
+			<h1>Garnet DeGelder</h1>
+			<section>
+				<h2>About</h2>
+				<p>I am a software developer, currently in college.</p>
+			</section>
+			<section>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</section>
+		</main>
+	</body>
+
 </html>

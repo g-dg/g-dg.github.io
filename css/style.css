@@ -84,6 +84,15 @@ nav .dropdown > .content > a {
 	display: block;
 	float: none;
 }
+nav .dropdown > .button a,
+nav .dropdown > .content a {
+	border-bottom: 2px #666 solid;
+}
+nav .dropdown > .button a:hover,
+nav .dropdown > .content  a:hover {
+	border: none;
+	background-color: #666;
+}
 
 nav > .dropdown > .content .dropdown {
 	position: relative;

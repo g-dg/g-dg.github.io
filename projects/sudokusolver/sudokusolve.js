@@ -276,34 +276,34 @@ function isDuplicateValue(inputArray, value) {
 // handles keypresses
 function keypressHandler(e) {
 	var keyIndex = ["1", "2", "3", "4", "5", "6", "7", "8", "9"].indexOf(e.key)
-	if (keyIndex != -1) {
+	if ((keyIndex != -1) && !(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey)) {
 		e.preventDefault();
 		e.stopPropagation();
 		inputSudoku[selectedCell.row][selectedCell.col] = keyIndex + 1;
 		calculatedSudoku = JSON.parse(JSON.stringify(inputSudoku));
 		if ($("#autosolve").is(':checked')) solve();
-	} else if (["0", "Backspace", "Clear", "Delete"].indexOf(e.key) != -1) {
+	} else if ((["0", "Backspace", "Clear", "Delete"].indexOf(e.key) != -1) && !(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey)) {
 		e.stopPropagation();
 		e.preventDefault();
 		inputSudoku[selectedCell.row][selectedCell.col] = 0;
 		calculatedSudoku = JSON.parse(JSON.stringify(inputSudoku));
 		if ($("#autosolve").is(':checked')) solve();
-	} else if (e.key == "ArrowUp" || e.key == "Up") {
+	} else if ((e.key == "ArrowUp" || e.key == "Up") && !(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey)) {
 		e.preventDefault();
 		e.stopPropagation();
 		selectedCell.row--;
 		if (selectedCell.row < 0) selectedCell.row = 8;
-	} else if (e.key == "ArrowLeft" || e.key == "Left") {
+	} else if ((e.key == "ArrowLeft" || e.key == "Left") && !(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey)) {
 		e.preventDefault();
 		e.stopPropagation();
 		selectedCell.col--;
 		if (selectedCell.col < 0) selectedCell.col = 8;
-	} else if (e.key == "ArrowRight" || e.key == "Right") {
+	} else if ((e.key == "ArrowRight" || e.key == "Right") && !(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey)) {
 		e.preventDefault();
 		e.stopPropagation();
 		selectedCell.col++;
 		if (selectedCell.col > 8) selectedCell.col = 0;
-	} else if (e.key == "ArrowDown" || e.key == "Down") {
+	} else if ((e.key == "ArrowDown" || e.key == "Down") && !(e.altKey || e.ctrlKey || e.metaKey || e.shiftKey)) {
 		e.preventDefault();
 		e.stopPropagation();
 		selectedCell.row++;

@@ -26,7 +26,7 @@ $(function () {
 	body.append($("<input id=\"number_input\" type=\"number\" min=\"1\" max=\"9\" step=\"1\" placeholder=\"\">").keypress(keypressHandler));
 
 	// set current value on type
-	$(document.body).bind("keypress", keypressHandler);
+	$(document.body).bind("keydown", keypressHandler);
 
 	// allocate sudoku and draw
 	clear();

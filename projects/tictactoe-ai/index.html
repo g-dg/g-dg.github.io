@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Tic Tac Toe AI</title>
+	<style>
+table.board {
+	border-collapse: collapse;
+}
+table.board td {
+	border: 1px black solid;
+	padding: 1em;
+	font-family: monospace;
+	font-size: 200%;
+}
+	</style>
+</head>
+<body onload="init();">
+	<script>
+"use strict"
+
+// 0: nothing
+// 1: x
+// 2: o
+var board;
+
+function clone(input) {
+	return JSON.parse(JSON.stringify(input));
+}
+
+function shuffle_array(a) { // https://stackoverflow.com/a/6274381
+	var j, x, i;
+	for (i = a.length - 1; i > 0; i--) {
+		j = Math.floor(Math.random() * (i + 1));
+		x = a[i];
+		a[i] = a[j];
+		a[j] = x;
+	}
+	return a;
+}
+
+var player_wins = 0;
+var computer_wins = 0;
+var ties = 0;
+
+var player_piece;
+var current_piece;
+
+function init() {
+	reset_board();
+	redraw();
+}
+
+function redraw() {
+	for (var i = 0; i < 9; i++) {
+		switch (board[i]) {
+			case 0:
+				document.getElementById("cell_" + (i + 1)).innerHTML = "&nbsp;";
+				break;
+			case 1:
+				document.getElementById("cell_" + (i + 1)).innerHTML = "X";
+				break;
+			case 2:
+				document.getElementById("cell_" + (i + 1)).innerHTML = "O";
+				break;
+		}
+	}
+	var board_status = check_board();
+	document.getElementById("info").innerText = JSON.stringify({
+		"Current Turn": (player_piece == current_piece ? "Player" : "Computer"),
+		"Player's Piece": (player_piece == 1 ? "X" : "O"),
+		"Results": {
+			"Player wins": player_wins,
+			"Computer wins": computer_wins,
+			"Ties": ties
+		}
+	}, null, 4);
+}
+
+function player_place(cell) {
+	if (place_piece(player_piece, cell)) {
+		next_move();
+	} else {
+		alert("That cell is already filled")
+	}
+}
+
+function computer_turn() {
+	// create the array of possibilities
+	var possibilities = [];
+	for (var i = 0; i < 9; i++) {
+		possibilities.push({cell: (i + 1), valid: (board[i] == 0), wins: 0, ties: 0, losses: 0});
+	}
+
+	// find if there are any valid possibilities (shouldn't be needed, just a sanity check)
+	var valid_found = false;
+	for (var i = 0; i < 9; i++) {
+		valid_found = valid_found | possibilities[i].valid;
+	}
+	if (!valid_found) {
+		// end game
+		next_move();
+		return;
+	}
+
+	// get number of iterations
+	var iterations = parseInt(document.getElementById("simulation_iteration_count").value);
+	if (iterations === NaN) {
+		iterations = 0;
+	}
+
+	// run through iterations
+	for (var i = 0; i < iterations; i++) {
+		// new board based of the current one for each test
+		var test_board = clone(board);
+
+		// start with current piece (we're testing for our own placement)
+		var test_piece = current_piece;
+		var computer_piece = current_piece;
+
+		// get a cell to test
+		var test_placement_cell;
+		var found = false;
+		while (!found) {
+			test_placement_cell = Math.floor(Math.random() * 9) + 1;
+			found = possibilities[test_placement_cell - 1].valid;
+		}
+
+		// test with just placing the value
+		place_piece(test_piece, test_placement_cell, test_board);
+		var result = check_board(test_board);
+		if (result != -1) {
+			if (result == 0) { // tied
+				possibilities[test_placement_cell - 1].ties++;
+			} else {
+				if (result == computer_piece) { // won
+					possibilities[test_placement_cell - 1].wins++;
+				} else { // lost
+					possibilities[test_placement_cell - 1].losses++;
+				}
+			}
+		} else {
+			// have to continue finding result
+			while (result == -1) {
+				test_piece = (1 - (test_piece - 1)) + 1; // other player's turn
+
+				// place something
+				var test_cell;
+				do {
+					test_cell = Math.floor(Math.random() * 9) + 1;
+				} while (!place_piece(test_piece, test_cell, test_board));
+
+				result = check_board(test_board);
+				if (result != -1) {
+					if (result == 0) { // tied
+						possibilities[test_placement_cell - 1].ties++;
+					} else {
+						if (result == computer_piece) { // won
+							possibilities[test_placement_cell - 1].wins++;
+						} else { // lost
+							possibilities[test_placement_cell - 1].losses++;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// remove invalid possibilities
+	possibilities = possibilities.filter(p => p.valid);
+
+	// shuffle possibilities
+	possibilities = shuffle_array(possibilities);
+	
+	// find which is best
+	// TODO: Add an function that makes it play against itself to tune these values
+	possibilities.sort((a, b) => (b.wins - (b.ties / 2) - b.losses) - (a.wins - (a.ties / 2) - a.losses));
+
+	if (possibilities.length > 0) {
+		// place the first cell
+		place_piece(current_piece, possibilities[0].cell);
+	}
+
+	next_move();
+}
+
+function place_piece(piece, location, input_board) {
+	if (input_board === undefined || input_board === null) {
+		input_board = board;
+	}
+	if (input_board[location - 1] != 0) {
+		return false;
+	} else {
+		input_board[location - 1] = piece;
+		return true;
+	}
+}
+
+// -1: no result
+// 0: full (tie)
+// 1: x wins
+// 2: o wins
+// Note: ensure you run this after every move
+function check_board(check_board) {
+	if (check_board === undefined || check_board === null) {
+		check_board = board;
+	}
+
+	// check rows
+	for (var row = 0; row < 3; row++) {
+		var last_cell = null;
+		var won = true;
+		for (var col = 0; col < 3; col++) {
+			if (check_board[row * 3 + col] === 0) {
+				won = false;
+			} else {
+				if (last_cell === null) { // first cell in row
+					last_cell = check_board[row * 3 + col];
+				} else {
+					if (check_board[row * 3 + col] !== last_cell) {
+						won = false;
+					}
+				}
+			}
+		}
+		if (won) {
+			return last_cell;
+		}
+	}
+
+	// check columns
+	for (var col = 0; col < 3; col++) {
+		var last_cell = null;
+		var won = true;
+		for (var row = 0; row < 3; row++) {
+			if (check_board[row * 3 + col] === 0) {
+				won = false;
+			} else {
+				if (last_cell === null) { // first cell in col
+					last_cell = check_board[row * 3 + col];
+				} else {
+					if (check_board[row * 3 + col] !== last_cell) {
+						won = false;
+					}
+				}
+			}
+		}
+		if (won) {
+			return last_cell;
+		}
+	}
+
+	// check top left to bottom right diagonal
+	var last_cell = null;
+	var won = true;
+	for (var i = 0; i < 3; i++) {
+		if (check_board[i * 3 + i] === 0) {
+			won = false;
+		} else {
+			if (last_cell === null) { // first cell
+				last_cell = check_board[i * 3 + i];
+			} else {
+				if (check_board[i * 3 + i] !== last_cell) {
+					won = false;
+				}
+			}
+		}
+	}
+	if (won) {
+		return last_cell;
+	}
+
+	// check top right to bottom left diagonal
+	var last_cell = null;
+	var won = true;
+	for (var i = 0; i < 3; i++) {
+		if (check_board[i * 3 + (2 - i)] === 0) {
+			won = false;
+		} else {
+			if (last_cell === null) { // first cell
+				last_cell = check_board[i * 3 + (2 - i)];
+			} else {
+				if (check_board[i * 3 + (2 - i)] !== last_cell) {
+					won = false;
+				}
+			}
+		}
+	}
+	if (won) {
+		return last_cell;
+	}
+
+	// check for tie
+	var full_cells = 0;
+	for (var i = 0; i < 9; i++) {
+		if (check_board[i] != 0) {
+			full_cells++;
+		}
+	}
+	if (full_cells >= 9) {
+		return 0;
+	}
+
+	return -1;
+}
+
+function next_move() {
+	// first, check the board
+	var result = check_board();
+	if (result != -1) {
+		if (result == 0) {
+			ties++;
+			alert("Tied!");
+		} else {
+			if (result == player_piece) {
+				player_wins++;
+				alert("Player won!");
+			} else {
+				computer_wins++;
+				alert("Computer won!");
+			}
+		}
+		reset_board();
+	} else {
+		current_piece = (1 - (current_piece - 1)) + 1; // other player's turn
+		if (current_piece != player_piece) {
+			setTimeout(computer_turn); // prevent stack overflow
+		}
+	}
+	redraw();
+}
+
+function reset_board() {
+	board = [];
+	for (var i = 0; i < 9; i++) {
+		board.push(0);
+	}
+	player_piece = (Math.floor(Math.random() * 2) + 1);
+	current_piece = 1;
+	if (current_piece != player_piece) {
+		computer_turn();
+	}
+}
+
+document.onkeydown = function() {
+	if (player_piece == current_piece) {
+		var key_index = (["7", "8", "9", "4", "5", "6", "1", "2", "3"]).indexOf(event.key)
+		if (key_index != -1) {
+			player_place(key_index + 1);
+		}
+	}
+}
+
+	</script>
+
+	<h1>Tic-tac-toe with an AI</h1>
+	<h2>Using a Pure Monte Carlo game search for the computer's side</h2>
+
+	<table class="board">
+		<tbody>
+			<tr>
+				<td id="cell_1">&nbsp;</td>
+				<td id="cell_2">&nbsp;</td>
+				<td id="cell_3">&nbsp;</td>
+			</tr>
+			<tr>
+				<td id="cell_4">&nbsp;</td>
+				<td id="cell_5">&nbsp;</td>
+				<td id="cell_6">&nbsp;</td>
+			</tr>
+			<tr>
+				<td id="cell_7">&nbsp;</td>
+				<td id="cell_8">&nbsp;</td>
+				<td id="cell_9">&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<br />
+
+	<label>Simulations per turn:</label>
+	<input id="simulation_iteration_count" type="number" min="0" value="1000" />
+	<br />
+	<input type="button" value="Reset Scores" onclick="player_wins = 0; computer_wins = 0; ties = 0; redraw();" />
+	<br />
+
+	<pre id="info"></pre>
+
+	<p>To select where your marker goes, use the following guide and press the corresponding key:</p>
+	<pre>7 8 9
+4 5 6
+1 2 3</pre>
+
+</body>
+</html>
